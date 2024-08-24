@@ -109,9 +109,13 @@ export default {
           if ( portNo == 89 ){
             jsonFile = '/json/bus-schedule-std.json';
           }
-          const response = await fetch(jsonFile);
+          let response = await fetch(jsonFile);
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            jsonFile = '/json/bus-schedule-sample.json';
+            response = await fetch(jsonFile);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
           }
           busData.value = await response.json();
           saveToLocalStorage(busData.value);
